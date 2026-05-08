@@ -311,7 +311,7 @@ else:
                     cursor: pointer;
                     width: auto;
                     max-width: 90%;
-                    margin: 0 10vw;
+                    margin: 0 50vw;
                     display: block;
                 }
 
