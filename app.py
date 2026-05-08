@@ -4,9 +4,38 @@ import requests
 import json
 import re
 import html
+import base64
+import hashlib
+import hmac
 from datetime import datetime
 
 API_URL = st.secrets.get("API_URL")
+APP_SECRET = st.secrets.get("APP_SECRET", API_URL or "bolao-secret-fallback")
+def gerar_auth_token(usuario):
+    usuario_limpo = str(usuario or "").strip()
+    assinatura = hmac.new(
+        APP_SECRET.encode("utf-8"),
+        usuario_limpo.encode("utf-8"),
+        hashlib.sha256
+    ).hexdigest()
+    token = f"{usuario_limpo}:{assinatura}"
+    return base64.urlsafe_b64encode(token.encode("utf-8")).decode("utf-8")
+
+
+def validar_auth_token(token):
+    try:
+        decodificado = base64.urlsafe_b64decode(str(token or "").encode("utf-8")).decode("utf-8")
+        usuario, assinatura = decodificado.rsplit(":", 1)
+        assinatura_esperada = hmac.new(
+            APP_SECRET.encode("utf-8"),
+            usuario.encode("utf-8"),
+            hashlib.sha256
+        ).hexdigest()
+        if hmac.compare_digest(assinatura, assinatura_esperada):
+            return usuario
+    except Exception:
+        pass
+    return ""
 
 
 def chamar_api(metodo="get", payload=None, params=None):
@@ -95,12 +124,14 @@ if "pagina" not in st.session_state:
     st.session_state.pagina = "login"
 
 query_params = st.query_params
-usuario_param = query_params.get("usuario", "")
 pagina_param = query_params.get("pagina", "")
+auth_param = query_params.get("auth", "")
 
-if pagina_param == "logado" and usuario_param:
+usuario_restaurado = validar_auth_token(auth_param)
+
+if pagina_param == "logado" and usuario_restaurado:
     st.session_state.logado = True
-    st.session_state.usuario = usuario_param
+    st.session_state.usuario = usuario_restaurado
     st.session_state.pagina = "logado"
 elif pagina_param == "login":
     st.session_state.pagina = "login"
@@ -131,7 +162,7 @@ if not st.session_state.logado:
                 st.session_state.usuario = usuario
                 st.session_state.pagina = "logado"
                 st.query_params["pagina"] = "logado"
-                st.query_params["usuario"] = usuario
+                st.query_params["auth"] = gerar_auth_token(usuario)
                 st.rerun()
             elif dados:
                 st.error(dados.get("mensagem", "Usuário ou senha inválidos"))
@@ -154,7 +185,7 @@ if not st.session_state.logado:
                 st.session_state.usuario = novo_usuario
                 st.session_state.pagina = "logado"
                 st.query_params["pagina"] = "logado"
-                st.query_params["usuario"] = novo_usuario
+                st.query_params["auth"] = gerar_auth_token(novo_usuario)
                 st.rerun()
             elif dados:
                 st.error(dados.get("mensagem", "Não foi possível realizar o cadastro"))
@@ -172,7 +203,7 @@ else:
             st.session_state.logado = False
             st.session_state.pagina = "login"
             st.query_params["pagina"] = "login"
-            st.query_params["usuario"] = ""
+            st.query_params["auth"] = ""
             st.rerun()
 
     aba_palpites, aba_meus_palpites, aba_ranking = st.tabs(["Palpites", "Meus Palpites", "Ranking"])
