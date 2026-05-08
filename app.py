@@ -62,11 +62,6 @@ st.markdown("""
 
         div[data-testid="stAppViewContainer"] {
             margin-left: 0 !important;
-            background-color: white !important;
-        }
-        
-        section.main {
-            background-color: white !important;
         }
 
         div[data-testid="stSidebarResizer"],
