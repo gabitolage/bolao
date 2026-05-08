@@ -152,7 +152,7 @@ else:
             st.session_state.logado = False
             st.rerun()
 
-    aba_palpites, aba_ranking = st.tabs(["Palpites", "Ranking"])
+    aba_palpites, aba_meus_palpites, aba_ranking = st.tabs(["Palpites", "Meus Palpites", "Ranking"])
 
     # PALPITES
     with aba_palpites:
@@ -358,6 +358,27 @@ else:
                 st.success("palpites salvos")
             elif dados:
                 st.error(dados.get("mensagem", "Erro ao salvar"))
+
+    # MEUS PALPITES
+    with aba_meus_palpites:
+
+        st.title("📝 Meus Palpites")
+
+        meus_palpites = chamar_api(params={
+            "acao": "meus_palpites",
+            "usuario": st.session_state.usuario
+        })
+
+        if isinstance(meus_palpites, dict) and "palpites" in meus_palpites:
+            meus_palpites = meus_palpites["palpites"]
+
+        if not isinstance(meus_palpites, list):
+            st.info("Ainda não foi possível carregar os palpites salvos. O backend precisa expor a ação 'meus_palpites'.")
+        elif not meus_palpites:
+            st.info("Você ainda não tem palpites salvos.")
+        else:
+            df_meus = pd.DataFrame(meus_palpites)
+            st.dataframe(df_meus, use_container_width=True)
 
     # RANKING
     with aba_ranking:
