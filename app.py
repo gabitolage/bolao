@@ -6,7 +6,7 @@ import re
 import html
 from datetime import datetime
 
-API_URL = "https://script.google.com/macros/s/AKfycbyT-C5lDULC467cHEp-0KceowHfiQxdtzy8z5pkuMPekolBooSqWuyY6AKZGTW2lPQ/exec"
+API_URL = st.secrets.get("API_URL")
 
 
 def chamar_api(metodo="get", payload=None, params=None):
