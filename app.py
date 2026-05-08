@@ -309,11 +309,10 @@ else:
                     border: none;
                     border-radius: 6px;
                     cursor: pointer;
-                    width: auto;
-                    max-width: 90%;
-                    margin: 0 40vw;
-                    display: block;
-                    min-width: 240px;
+                    display: inline-block;
+                    margin: 0; /* centering handled by parent flex */
+                    min-width: 220px;
+                    max-width: 90vw;
                     white-space: nowrap;
                 }
 
