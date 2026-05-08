@@ -139,7 +139,8 @@ if not st.session_state.logado:
 
 # SISTEMA
 else:
-
+    st.write("✅ Logado com sucesso")
+    
     col_usuario, col_sair = st.columns([0.85, 0.15])
 
     with col_usuario:
