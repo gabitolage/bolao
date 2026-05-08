@@ -100,12 +100,12 @@ if not st.session_state.logado:
 
     # LOGIN
     with aba[0]:
+        with st.form("login_form"):
+            usuario = st.text_input("Usuário", key="login_usuario")
+            senha = st.text_input("Senha", type="password", key="login_senha")
+            entrar = st.form_submit_button("Entrar")
 
-        usuario = st.text_input("Usuário")
-        senha = st.text_input("Senha", type="password")
-
-        if st.button("Entrar"):
-
+        if entrar:
             dados = chamar_api("post", payload={
                 "acao": "login",
                 "usuario": usuario,
@@ -120,12 +120,12 @@ if not st.session_state.logado:
                 st.error(dados.get("mensagem", "Usuário ou senha inválidos"))
     # CADASTRO
     with aba[1]:
+        with st.form("cadastro_form"):
+            novo_usuario = st.text_input("Novo usuário", key="cad_usuario")
+            nova_senha = st.text_input("Nova senha", type="password", key="cad_senha")
+            cadastrar = st.form_submit_button("Cadastrar")
 
-        novo_usuario = st.text_input("Novo usuário")
-        nova_senha = st.text_input("Nova senha", type="password")
-
-        if st.button("Cadastrar"):
-
+        if cadastrar:
             dados = chamar_api("post", payload={
                 "acao": "cadastro",
                 "usuario": novo_usuario,
