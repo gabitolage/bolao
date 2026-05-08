@@ -399,9 +399,37 @@ else:
                         visitante = linha.get("visitante", "")
                         palpite_m = linha.get("mandante_palpite", "")
                         palpite_v = linha.get("visitante_palpite", "")
+                        gols_mandante = linha.get("gols_mandante", "")
+                        gols_visitante = linha.get("gols_visitante", "")
+
+                        status = ""
+                        tem_placar_real = (
+                            gols_mandante is not None and gols_visitante is not None and
+                            str(gols_mandante).strip() != "" and str(gols_visitante).strip() != ""
+                        )
+
+                        if tem_placar_real:
+                            try:
+                                real_m = int(float(gols_mandante))
+                                real_v = int(float(gols_visitante))
+                                palpite_m_int = int(float(palpite_m))
+                                palpite_v_int = int(float(palpite_v))
+
+                                if real_m == palpite_m_int and real_v == palpite_v_int:
+                                    status = "🟣 +5"
+                                elif (
+                                    (real_m > real_v and palpite_m_int > palpite_v_int) or
+                                    (real_m < real_v and palpite_m_int < palpite_v_int) or
+                                    (real_m == real_v and palpite_m_int == palpite_v_int)
+                                ):
+                                    status = "🟢 +1"
+                                else:
+                                    status = "🔴"
+                            except (TypeError, ValueError):
+                                status = ""
 
                         st.markdown(
-                            f"- {mandante} **{palpite_m}** x **{palpite_v}** {visitante}"
+                            f"- {mandante} **{palpite_m}** x **{palpite_v}** {visitante} {status}"
                         )
 
                     st.divider()
@@ -411,9 +439,37 @@ else:
                     visitante = linha.get("visitante", "")
                     palpite_m = linha.get("mandante_palpite", "")
                     palpite_v = linha.get("visitante_palpite", "")
+                    gols_mandante = linha.get("gols_mandante", "")
+                    gols_visitante = linha.get("gols_visitante", "")
+
+                    status = ""
+                    tem_placar_real = (
+                        gols_mandante is not None and gols_visitante is not None and
+                        str(gols_mandante).strip() != "" and str(gols_visitante).strip() != ""
+                    )
+
+                    if tem_placar_real:
+                        try:
+                            real_m = int(float(gols_mandante))
+                            real_v = int(float(gols_visitante))
+                            palpite_m_int = int(float(palpite_m))
+                            palpite_v_int = int(float(palpite_v))
+
+                            if real_m == palpite_m_int and real_v == palpite_v_int:
+                                status = "🟣 +5"
+                            elif (
+                                (real_m > real_v and palpite_m_int > palpite_v_int) or
+                                (real_m < real_v and palpite_m_int < palpite_v_int) or
+                                (real_m == real_v and palpite_m_int == palpite_v_int)
+                            ):
+                                status = "🟢 +1"
+                            else:
+                                status = "🔴"
+                        except (TypeError, ValueError):
+                            status = ""
 
                     st.markdown(
-                        f"- {mandante} **{palpite_m}** x **{palpite_v}** {visitante}"
+                        f"- {mandante} **{palpite_m}** x **{palpite_v}** {visitante} {status}"
                     )
 
     # RANKING
