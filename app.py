@@ -159,9 +159,26 @@ else:
 
         st.title("⚽ Jogos")
 
-        jogos = chamar_api(params={
-            "acao": "jogos"
-        })
+        # Cache jogos in session_state to avoid refetching on every widget interaction
+        cache_ttl_seconds = 60
+        now_ts = datetime.now().timestamp()
+
+        need_fetch = False
+        if "jogos_cache" not in st.session_state:
+            need_fetch = True
+        else:
+            last = st.session_state.get("jogos_cache_time", 0)
+            if (now_ts - last) > cache_ttl_seconds:
+                need_fetch = True
+
+        if need_fetch:
+            jogos = chamar_api(params={
+                "acao": "jogos"
+            })
+            st.session_state.jogos_cache = jogos
+            st.session_state.jogos_cache_time = now_ts
+        else:
+            jogos = st.session_state.jogos_cache
 
         if not isinstance(jogos, list):
             jogos = []
