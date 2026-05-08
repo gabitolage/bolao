@@ -62,6 +62,11 @@ st.markdown("""
 
         div[data-testid="stAppViewContainer"] {
             margin-left: 0 !important;
+            background-color: white !important;
+        }
+        
+        section.main {
+            background-color: white !important;
         }
 
         div[data-testid="stSidebarResizer"],
@@ -161,6 +166,8 @@ else:
         jogos = chamar_api(params={
             "acao": "jogos"
         })
+        
+        st.write(f"📊 Debug: {len(jogos) if isinstance(jogos, list) else 0} jogos recebidos")
 
         if not isinstance(jogos, list):
             jogos = []
@@ -174,6 +181,8 @@ else:
             data_jogo = pd.to_datetime(jogo["data"]).tz_localize(None)
             if data_jogo > hoje:
                 jogos_futuros.append((idx, jogo, data_jogo))
+        
+        st.write(f"📅 Debug: {len(jogos_futuros)} jogos futuros")
 
         for i in range(0, len(jogos_futuros), 2):
             col1, col_div, col2 = st.columns([1, 0.05, 1])
@@ -282,13 +291,15 @@ else:
                     left: 0;
                     right: 0;
                     z-index: 99999;
+                    width: 100%;
                     margin: 0;
                     padding: 15px;
                     background: #0e1016;
-                    border-top: none;
+                    border-top: 1px solid #333;
                     box-sizing: border-box;
                     display: flex;
                     justify-content: center;
+                    align-items: center;
                 }
 
                 div[data-testid="stForm"] form {
