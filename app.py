@@ -270,16 +270,25 @@ else:
 
             st.divider()
 
+        st.markdown('<div style="height: 80px;"></div>', unsafe_allow_html=True)
+
         st.markdown("""
             <style>
                 div[data-testid="stForm"] {
-                    width: 100%;
-                    margin: 20px 0 0 0;
-                    padding: 15px;
+                    position: fixed;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    z-index: 99999;
+                    height: 72px;
+                    padding: 12px 16px;
                     background: #0e1016;
                     border-top: 1px solid #333;
                     box-sizing: border-box;
-                    text-align: center;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    overflow: hidden;
                 }
 
                 div[data-testid="stForm"] form {
@@ -287,18 +296,20 @@ else:
                     justify-content: center;
                     align-items: center;
                     width: 100%;
+                    height: 100%;
                 }
 
                 div[data-testid="stForm"] button {
                     background-color: #4CAF50;
                     color: white;
-                    padding: 12px 40px;
-                    font-size: 16px;
-                    font-weight: bold;
+                    padding: 10px 32px;
+                    font-size: 15px;
+                    font-weight: 600;
                     border: none;
-                    border-radius: 4px;
+                    border-radius: 6px;
                     cursor: pointer;
                     width: auto;
+                    max-width: 90%;
                 }
 
                 div[data-testid="stForm"] button:hover {
