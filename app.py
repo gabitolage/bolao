@@ -299,7 +299,8 @@ else:
                     height: 100%;
                 }
 
-                div[data-testid="stForm"] button {
+                div[data-testid="stForm"] button,
+                div[data-testid="stForm"] .stButton > button {
                     background-color: #4CAF50;
                     color: white;
                     padding: 10px 32px;
@@ -310,6 +311,8 @@ else:
                     cursor: pointer;
                     width: auto;
                     max-width: 90%;
+                    margin: 0 auto;
+                    display: block;
                 }
 
                 div[data-testid="stForm"] button:hover {
