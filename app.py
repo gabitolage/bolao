@@ -378,7 +378,43 @@ else:
             st.info("Você ainda não tem palpites salvos.")
         else:
             df_meus = pd.DataFrame(meus_palpites)
-            st.dataframe(df_meus, use_container_width=True)
+
+            if "data" in df_meus.columns:
+                df_meus["data_ordem"] = pd.to_datetime(df_meus["data"], errors="coerce")
+                df_meus = df_meus.sort_values(["data_ordem", "jogo_id"], na_position="last")
+            else:
+                df_meus["data_ordem"] = pd.NaT
+
+            if "data" in df_meus.columns:
+                grupos = df_meus.groupby(df_meus["data_ordem"].dt.date, dropna=False)
+
+                for dia, grupo in grupos:
+                    if pd.isna(dia):
+                        st.subheader("Sem data do jogo")
+                    else:
+                        st.subheader(pd.Timestamp(dia).strftime("%d/%m/%Y"))
+
+                    for _, linha in grupo.iterrows():
+                        mandante = linha.get("mandante", "")
+                        visitante = linha.get("visitante", "")
+                        palpite_m = linha.get("mandante_palpite", "")
+                        palpite_v = linha.get("visitante_palpite", "")
+
+                        st.markdown(
+                            f"- {mandante} **{palpite_m}** x **{palpite_v}** {visitante}"
+                        )
+
+                    st.divider()
+            else:
+                for _, linha in df_meus.iterrows():
+                    mandante = linha.get("mandante", "")
+                    visitante = linha.get("visitante", "")
+                    palpite_m = linha.get("mandante_palpite", "")
+                    palpite_v = linha.get("visitante_palpite", "")
+
+                    st.markdown(
+                        f"- {mandante} **{palpite_m}** x **{palpite_v}** {visitante}"
+                    )
 
     # RANKING
     with aba_ranking:
