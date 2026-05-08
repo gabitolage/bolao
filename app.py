@@ -282,13 +282,15 @@ else:
                     z-index: 99999;
                     height: 72px;
                     padding: 12px 16px;
-                    background: #0e1016;
-                    border-top: 1px solid #333;
+                    background: transparent; /* footer transparent */
+                    border-top: 1px solid rgba(0,0,0,0.12);
                     box-sizing: border-box;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    overflow: hidden;
+                    overflow: visible;
+                    backdrop-filter: blur(6px);
+                    -webkit-backdrop-filter: blur(6px);
                 }
 
                 div[data-testid="stForm"] form {
@@ -314,6 +316,7 @@ else:
                     min-width: 220px;
                     max-width: 90vw;
                     white-space: nowrap;
+                    box-shadow: 0 6px 18px rgba(76,175,80,0.18);
                 }
 
                 div[data-testid="stForm"] button:hover {
