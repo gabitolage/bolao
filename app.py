@@ -345,7 +345,7 @@ else:
         """, unsafe_allow_html=True)
 
         with st.form("salvar_palpites_form", clear_on_submit=False):
-            salvar_clicado = st.form_submit_button("💾 Salvar Palpites")
+            salvar_clicado = st.form_submit_button("Salvar Palpites")
 
         if salvar_clicado:
             dados = chamar_api("post", payload={
@@ -355,7 +355,7 @@ else:
             })
 
             if dados and dados.get("sucesso", True):
-                st.success("Palpites salvos!")
+                st.success("palpites salvos")
             elif dados:
                 st.error(dados.get("mensagem", "Erro ao salvar"))
 
