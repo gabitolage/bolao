@@ -311,8 +311,10 @@ else:
                     cursor: pointer;
                     width: auto;
                     max-width: 90%;
-                    margin: 0 50vw;
+                    margin: 0 40vw;
                     display: block;
+                    min-width: 240px;
+                    white-space: nowrap;
                 }
 
                 div[data-testid="stForm"] button:hover {
