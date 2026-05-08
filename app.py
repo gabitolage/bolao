@@ -90,6 +90,20 @@ if "logado" not in st.session_state:
 
 if "usuario" not in st.session_state:
     st.session_state.usuario = ""
+
+if "pagina" not in st.session_state:
+    st.session_state.pagina = "login"
+
+query_params = st.query_params
+usuario_param = query_params.get("usuario", "")
+pagina_param = query_params.get("pagina", "")
+
+if pagina_param == "logado" and usuario_param:
+    st.session_state.logado = True
+    st.session_state.usuario = usuario_param
+    st.session_state.pagina = "logado"
+elif pagina_param == "login":
+    st.session_state.pagina = "login"
     
 # LOGIN / CADASTRO
 if not st.session_state.logado:
@@ -115,6 +129,9 @@ if not st.session_state.logado:
             if dados and dados.get("sucesso"):
                 st.session_state.logado = True
                 st.session_state.usuario = usuario
+                st.session_state.pagina = "logado"
+                st.query_params["pagina"] = "logado"
+                st.query_params["usuario"] = usuario
                 st.rerun()
             elif dados:
                 st.error(dados.get("mensagem", "Usuário ou senha inválidos"))
@@ -135,6 +152,9 @@ if not st.session_state.logado:
             if dados and dados.get("sucesso"):
                 st.session_state.logado = True
                 st.session_state.usuario = novo_usuario
+                st.session_state.pagina = "logado"
+                st.query_params["pagina"] = "logado"
+                st.query_params["usuario"] = novo_usuario
                 st.rerun()
             elif dados:
                 st.error(dados.get("mensagem", "Não foi possível realizar o cadastro"))
@@ -150,6 +170,9 @@ else:
     with col_sair:
         if st.button("Sair", use_container_width=True):
             st.session_state.logado = False
+            st.session_state.pagina = "login"
+            st.query_params["pagina"] = "login"
+            st.query_params["usuario"] = ""
             st.rerun()
 
     aba_palpites, aba_meus_palpites, aba_ranking = st.tabs(["Palpites", "Meus Palpites", "Ranking"])
