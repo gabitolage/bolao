@@ -144,7 +144,6 @@ if not st.session_state.logado:
 
 # SISTEMA
 else:
-    st.write("✅ Logado com sucesso")
     
     col_usuario, col_sair = st.columns([0.85, 0.15])
 
@@ -166,8 +165,6 @@ else:
         jogos = chamar_api(params={
             "acao": "jogos"
         })
-        
-        st.write(f"📊 Debug: {len(jogos) if isinstance(jogos, list) else 0} jogos recebidos")
 
         if not isinstance(jogos, list):
             jogos = []
@@ -181,8 +178,6 @@ else:
             data_jogo = pd.to_datetime(jogo["data"]).tz_localize(None)
             if data_jogo > hoje:
                 jogos_futuros.append((idx, jogo, data_jogo))
-        
-        st.write(f"📅 Debug: {len(jogos_futuros)} jogos futuros")
 
         for i in range(0, len(jogos_futuros), 2):
             col1, col_div, col2 = st.columns([1, 0.05, 1])
@@ -280,26 +275,16 @@ else:
 
             st.divider()
 
-        # Espaço para não cobrir conteúdo
-        st.markdown('<div style="height: 100px;"></div>', unsafe_allow_html=True)
-
         st.markdown("""
             <style>
                 div[data-testid="stForm"] {
-                    position: fixed;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    z-index: 99999;
                     width: 100%;
-                    margin: 0;
+                    margin: 20px 0 0 0;
                     padding: 15px;
                     background: #0e1016;
                     border-top: 1px solid #333;
                     box-sizing: border-box;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+                    text-align: center;
                 }
 
                 div[data-testid="stForm"] form {
@@ -319,7 +304,6 @@ else:
                     border-radius: 4px;
                     cursor: pointer;
                     width: auto;
-                    max-width: 500px;
                 }
 
                 div[data-testid="stForm"] button:hover {
