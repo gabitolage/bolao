@@ -133,7 +133,9 @@ if not st.session_state.logado:
             })
 
             if dados and dados.get("sucesso"):
-                st.success("Cadastro realizado")
+                st.session_state.logado = True
+                st.session_state.usuario = novo_usuario
+                st.rerun()
             elif dados:
                 st.error(dados.get("mensagem", "Não foi possível realizar o cadastro"))
 
